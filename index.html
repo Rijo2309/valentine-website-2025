@@ -8,60 +8,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="styles.css">
-    
     <style>
-        body {
-            /* 'contain' makes the image fit the screen perfectly without cropping */
-            background: url("bg.jpeg") no-repeat center center fixed !important;
-            background-size: contain !important;
-            
-            /* Fill the rest of the screen with a dark color that matches the vibe */
-            background-color: #1a1a1a !important; 
-            
-            text-align: center;
-            color: white;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            font-family: 'Poppins', sans-serif;
-            
-            /* Centers the content box on the screen */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+body {
+  /* This points to your newly named file */
+  background: url("bg.jpeg") no-repeat center center fixed !important;
+  background-size: cover !important;
+  text-align: center;
+  color: white;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
 
-        /* Glass morphism container to make text pop against the image */
-        .container {
-            background: rgba(255, 255, 255, 0.15) !important; 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-            max-width: 85%;
-            width: 450px;
-        }
-
-        h1, h2 {
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
-            margin-bottom: 20px;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        /* Ensure buttons are visible */
-        .cute-btn {
-            margin: 10px;
-            cursor: pointer;
-        }
-    </style>
+/* This ensures the white content box doesn't hide the background */
+.container {
+  background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+  backdrop-filter: blur(10px); /* Optional: adds a frosty glass look */
+  border-radius: 20px;
+  padding: 2rem;
+  display: inline-block;
+  margin-top: 10vh;
+}
+</style>
 </head>
 <body>
-    <div class="floating-elements"></div>
+    <div class="floating-elements">
+        </div>
 
     <div class="container">
         <h1 id="valentineTitle"></h1>
