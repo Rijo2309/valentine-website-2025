@@ -8,80 +8,101 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="styles.css">
+    
     <style>
-body {
-  /* This points to your newly named file */
-  background: url("bg.jpeg") no-repeat center center fixed !important;
-  background-size: cover !important;
-  text-align: center;
-  color: white;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-}
+        body {
+            /* 'cover' ensures the image fills the entire screen with no black bars */
+            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), 
+                        url("bg.jpeg") no-repeat center center fixed !important;
+            background-size: cover !important;
+            
+            text-align: center;
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
 
-/* This ensures the white content box doesn't hide the background */
-.container {
-  background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
-  backdrop-filter: blur(10px); /* Optional: adds a frosty glass look */
-  border-radius: 20px;
-  padding: 2rem;
-  display: inline-block;
-  margin-top: 10vh;
-}
-</style>
+        /* Music Button - Top Right & Evident */
+        .music-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .music-btn {
+            background: #ff4d6d !important; /* Bright pink/red */
+            color: white !important;
+            border: 2px solid white !important;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.05);
+            background: #ff758f !important;
+        }
+
+        /* The Question Container */
+        .container {
+            background: rgba(255, 255, 255, 0.2) !important; 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            max-width: 90%;
+            width: 420px;
+            position: relative;
+        }
+
+        h1, h2 {
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .cute-btn {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 15px;
+            border: none;
+            margin: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        #yesBtn1, #yesBtn3 { background: #4CAF50; color: white; }
+        #noBtn1, #noBtn3 { background: #f44336; color: white; }
+
+        .hidden { display: none; }
+
+        /* Floating hearts layer */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+    </style>
 </head>
 <body>
-    <div class="floating-elements">
-        </div>
+    <div class="floating-elements"></div>
 
-    <div class="container">
-        <h1 id="valentineTitle"></h1>
-        
-        <div id="musicControls" class="music-controls">
-            <button id="musicToggle" class="music-btn">🎵 Play Music</button>
-            <audio id="bgMusic" loop>
-                <source id="musicSource" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
-
-        <div class="question-section" id="question1">
-            <h2 id="question1Text"></h2>
-            <button class="cute-btn" onclick="moveButton(this)" id="yesBtn1"></button>
-            <button class="cute-btn" onclick="moveButton(this)" id="noBtn1"></button>
-            <div class="secret-answer">
-                <button class="cute-btn special" onclick="showNextQuestion(2)" id="secretAnswerBtn"></button>
-            </div>
-        </div>
-
-        <div class="question-section hidden" id="question2">
-            <h2 id="question2Text"></h2>
-            <div class="love-meter">
-                <input type="range" min="0" max="10000" value="100" class="slider" id="loveMeter">
-                <p>
-                    <span class="love-value-container"><span id="startText"></span> (<span id="loveValue">100</span>%)</span>
-                    <span id="extraLove" class="hidden"></span>
-                </p>
-            </div>
-            <button class="cute-btn" onclick="showNextQuestion(3)" id="nextBtn"></button>
-        </div>
-
-        <div class="question-section hidden" id="question3">
-            <h2 id="question3Text"></h2>
-            <button class="cute-btn final-yes" onclick="celebrate()" id="yesBtn3"></button>
-            <button class="cute-btn" onclick="moveButton(this)" id="noBtn3"></button>
-        </div>
-
-        <div class="celebration hidden" id="celebration">
-            <h2 id="celebrationTitle"></h2>
-            <p class="celebration-text" id="celebrationMessage"></p>
-            <p class="celebration-text" id="celebrationEmojis"></p>
-        </div>
-    </div>
-
-    <script src="config.js"></script>
-    <script src="theme.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+    <div id="musicControls" class="music-controls">
+        <button id="musicToggle" class="music-btn">🎵 Play Music</button>
