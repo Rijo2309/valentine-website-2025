@@ -7,15 +7,11 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="styles.css">
-    
     <style>
         body {
-            /* Fills the screen and avoids black bars */
             background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), 
                         url("bg.jpeg") no-repeat center center fixed !important;
             background-size: cover !important;
-            
             text-align: center;
             color: white;
             margin: 0;
@@ -28,7 +24,7 @@
             overflow: hidden;
         }
 
-        /* Music Button - Top Right and Highly Visible */
+        /* Music Button - Top Right & Bold Pink */
         .music-controls {
             position: fixed;
             top: 25px;
@@ -37,13 +33,12 @@
         }
 
         .music-btn {
-            background: #ff4d6d !important; /* Bold Pink/Red */
+            background: #ff4d6d !important; /* Matches your UI */
             color: white !important;
             border: 2px solid #fff !important;
             padding: 12px 24px;
             border-radius: 50px;
             font-weight: 700;
-            font-size: 1rem;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             display: flex;
@@ -51,32 +46,31 @@
             gap: 8px;
         }
 
-        /* Secret Text - Bottom Right and Subtle */
+        /* Secret Text - Bottom Right & Subtle visibility */
         .secret-answer {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 15px;
+            right: 15px;
             z-index: 1000;
         }
 
         .cute-btn.special {
-            background: rgba(255, 255, 255, 0.2) !important; /* Very faint */
-            color: rgba(255, 255, 255, 0.6) !important; /* Low contrast but readable */
-            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.05) !important; 
+            color: rgba(255, 255, 255, 0.3) !important; /* Low visibility */
+            font-size: 0.75rem;
             border: none;
             padding: 8px 12px;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
+            backdrop-filter: blur(2px);
+            transition: all 0.5s ease;
         }
 
         .cute-btn.special:hover {
-            background: rgba(255, 255, 255, 0.4) !important;
-            color: white !important;
+            color: rgba(255, 255, 255, 1) !important;
+            background: rgba(255, 255, 255, 0.2) !important;
         }
 
-        /* Content Container */
         .container {
             background: rgba(255, 255, 255, 0.2) !important; 
             backdrop-filter: blur(15px);
@@ -87,83 +81,80 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
             max-width: 85%;
             width: 400px;
-            position: relative;
-        }
-
-        h1, h2 {
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-            margin-bottom: 20px;
         }
 
         .cute-btn {
-            padding: 12px 28px;
-            font-size: 1.1rem;
+            padding: 12px 25px;
+            margin: 10px;
             border-radius: 15px;
             border: none;
-            margin: 10px;
             cursor: pointer;
             font-weight: 600;
+            transition: 0.3s;
         }
-
-        #yesBtn1, #yesBtn3 { background: #ff4d6d; color: white; }
-        #noBtn1, #noBtn3 { background: #6c757d; color: white; }
-
+        #yesBtn { background: #ff4d6d; color: white; }
+        #noBtn { background: #6c757d; color: white; }
         .hidden { display: none; }
-
-        .floating-elements {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
     </style>
 </head>
 <body>
-    <div class="floating-elements"></div>
 
     <div id="musicControls" class="music-controls">
-        <button id="musicToggle" class="music-btn">🎵 Play Music</button>
+        <button id="musicToggle" class="music-btn" onclick="toggleMusic()">🎵 Play Music</button>
         <audio id="bgMusic" loop>
-            <source id="musicSource" type="audio/mpeg">
+            <source src="love_me_love_me.mp3" type="audio/mpeg">
         </audio>
     </div>
 
     <div class="container">
-        <h1 id="valentineTitle"></h1>
+        <h1>devu, my love...</h1>
         
-        <div class="question-section" id="question1">
-            <h2 id="question1Text"></h2>
-            <button class="cute-btn" onclick="moveButton(this)" id="yesBtn1"></button>
-            <button class="cute-btn" onclick="moveButton(this)" id="noBtn1"></button>
+        <div id="questionArea">
+            <h2 id="mainQuestion">Do you like me?</h2>
+            <button class="cute-btn" id="yesBtn" onclick="nextStep()">Yes</button>
+            <button class="cute-btn" id="noBtn" onmouseover="moveButton()">No</button>
         </div>
 
-        <div class="question-section hidden" id="question2">
-            <h2 id="question2Text"></h2>
-            <div class="love-meter">
-                <input type="range" min="0" max="10000" value="100" class="slider" id="loveMeter">
-                <p>
-                    <span id="loveValue">100</span>%
-                </p>
-            </div>
-            <button class="cute-btn" onclick="showNextQuestion(3)" id="nextBtn"></button>
-        </div>
-
-        <div class="question-section hidden" id="question3">
-            <h2 id="question3Text"></h2>
-            <button class="cute-btn final-yes" onclick="celebrate()" id="yesBtn3"></button>
-            <button class="cute-btn" onclick="moveButton(this)" id="noBtn3"></button>
-        </div>
-
-        <div class="celebration hidden" id="celebration">
-            <h2 id="celebrationTitle"></h2>
-            <p id="celebrationMessage"></p>
+        <div id="celebration" class="hidden">
+            <h2>YAYYY! 🎉</h2>
+            <p>I love you so much, devu!</p>
         </div>
     </div>
+
     <div class="secret-answer">
-        <button class="cute-btn special" onclick="showNextQuestion(2)" id="secretAnswerBtn">I don't like you, I love you! ❤️</button>
+        <button class="cute-btn special" onclick="secretLove()">I don't like you, I love you! ❤️</button>
     </div>
-    <script src="config.js"></script>
-    <script src="theme.js"></script>
-    <script src="script.js"></script>
+
+    <script>
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicToggle');
+            if (music.paused) {
+                music.play();
+                btn.innerHTML = "⏸ Pause Music";
+            } else {
+                music.pause();
+                btn.innerHTML = "🎵 Play Music";
+            }
+        }
+
+        function nextStep() {
+            document.getElementById('questionArea').classList.add('hidden');
+            document.getElementById('celebration').classList.remove('hidden');
+        }
+
+        function moveButton() {
+            const btn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function secretLove() {
+            alert("Devu, you found the secret! I love you more! ❤️");
+        }
+    </script>
 </body>
 </html>
