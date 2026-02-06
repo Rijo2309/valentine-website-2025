@@ -9,11 +9,6 @@
     
     <style>
         body {
-            background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), 
-                        url("bg.jpeg") no-repeat center center fixed !important;
-            background-size: cover !important;
-            text-align: center;
-            color: white;
             margin: 0;
             padding: 0;
             min-height: 100vh;
@@ -22,6 +17,18 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            position: relative;
+        }
+
+        /* Fixed background with blur to match screenshots */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url("bg.jpeg") no-repeat center center/cover;
+            filter: blur(5px);
+            z-index: -1;
         }
 
         /* Music Button - Top Right & Bold Pink */
@@ -33,7 +40,7 @@
         }
 
         .music-btn {
-            background: #ff4d6d !important; /* Matches your UI */
+            background: #ff4d6d !important;
             color: white !important;
             border: 2px solid #fff !important;
             padding: 12px 24px;
@@ -46,7 +53,7 @@
             gap: 8px;
         }
 
-        /* Secret Text - Bottom Right & Subtle visibility */
+        /* Secret Text - Bottom Right */
         .secret-answer {
             position: fixed;
             bottom: 15px;
@@ -56,13 +63,12 @@
 
         .cute-btn.special {
             background: rgba(255, 255, 255, 0.05) !important; 
-            color: rgba(255, 255, 255, 0.3) !important; /* Low visibility */
+            color: rgba(255, 255, 255, 0.3) !important;
             font-size: 0.75rem;
             border: none;
             padding: 8px 12px;
             border-radius: 8px;
             cursor: pointer;
-            backdrop-filter: blur(2px);
             transition: all 0.5s ease;
         }
 
@@ -72,15 +78,17 @@
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.2) !important; 
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.15) !important; 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 25px;
             padding: 40px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             max-width: 85%;
             width: 400px;
+            color: white;
+            text-align: center;
         }
 
         .cute-btn {
@@ -94,14 +102,14 @@
         }
         #yesBtn { background: #ff4d6d; color: white; }
         
-        /* Updated No button styles for smooth movement */
+        /* Updated No button styles */
         #noBtn { 
             background: #6c757d; 
             color: white; 
-            position: absolute; 
-            transition: all 0.3s ease; 
+            position: absolute; /* Allows moveButton to position it */
+            transition: all 0.2s ease; /* Faster transition for escaping */
         }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -153,15 +161,14 @@
         // Updated function to keep button within bounds and ensure smooth movement
         function moveButton() {
             const btn = document.getElementById('noBtn');
-            const container = document.querySelector('.container');
             
             // Calculate boundaries based on screen size minus button size
-            const maxWidth = window.innerWidth - btn.offsetWidth;
-            const maxHeight = window.innerHeight - btn.offsetHeight;
+            const maxWidth = window.innerWidth - btn.offsetWidth - 20;
+            const maxHeight = window.innerHeight - btn.offsetHeight - 20;
             
             // Generate random positions within safe bounds
-            const x = Math.max(0, Math.floor(Math.random() * maxWidth));
-            const y = Math.max(0, Math.floor(Math.random() * maxHeight));
+            const x = Math.max(20, Math.floor(Math.random() * maxWidth));
+            const y = Math.max(20, Math.floor(Math.random() * maxHeight));
             
             btn.style.position = 'fixed';
             btn.style.left = x + 'px';
@@ -171,7 +178,7 @@
             btn.style.pointerEvents = 'none';
             setTimeout(() => {
                 btn.style.pointerEvents = 'auto';
-            }, 300);
+            }, 100);
         }
 
         function secretLove() {
