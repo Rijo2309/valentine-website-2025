@@ -93,7 +93,14 @@
             transition: 0.3s;
         }
         #yesBtn { background: #ff4d6d; color: white; }
-        #noBtn { background: #6c757d; color: white; position: relative; }
+        
+        /* Updated No button styles for smooth movement */
+        #noBtn { 
+            background: #6c757d; 
+            color: white; 
+            position: absolute; 
+            transition: all 0.3s ease; 
+        }
         .hidden { display: none; }
     </style>
 </head>
@@ -143,23 +150,28 @@
             document.getElementById('celebration').classList.remove('hidden');
         }
 
-        // Updated moveButton function to make the button unclickable
+        // Updated function to keep button within bounds and ensure smooth movement
         function moveButton() {
             const btn = document.getElementById('noBtn');
+            const container = document.querySelector('.container');
             
-            // Calculate random position within the viewport
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            // Calculate boundaries based on screen size minus button size
+            const maxWidth = window.innerWidth - btn.offsetWidth;
+            const maxHeight = window.innerHeight - btn.offsetHeight;
+            
+            // Generate random positions within safe bounds
+            const x = Math.max(0, Math.floor(Math.random() * maxWidth));
+            const y = Math.max(0, Math.floor(Math.random() * maxHeight));
             
             btn.style.position = 'fixed';
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
             
-            // Temporary CSS to ensure it can't be clicked while moving
+            // Ensures the button is not clickable while moving
             btn.style.pointerEvents = 'none';
             setTimeout(() => {
                 btn.style.pointerEvents = 'auto';
-            }, 500);
+            }, 300);
         }
 
         function secretLove() {
