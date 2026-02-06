@@ -93,7 +93,7 @@
             transition: 0.3s;
         }
         #yesBtn { background: #ff4d6d; color: white; }
-        #noBtn { background: #6c757d; color: white; }
+        #noBtn { background: #6c757d; color: white; position: relative; }
         .hidden { display: none; }
     </style>
 </head>
@@ -112,7 +112,7 @@
         <div id="questionArea">
             <h2 id="mainQuestion">Do you like me?</h2>
             <button class="cute-btn" id="yesBtn" onclick="nextStep()">Yes</button>
-            <button class="cute-btn" id="noBtn" onmouseover="moveButton()">No</button>
+            <button class="cute-btn" id="noBtn" onmouseenter="moveButton()">No</button>
         </div>
 
         <div id="celebration" class="hidden">
@@ -143,13 +143,23 @@
             document.getElementById('celebration').classList.remove('hidden');
         }
 
+        // Updated moveButton function to make the button unclickable
         function moveButton() {
             const btn = document.getElementById('noBtn');
+            
+            // Calculate random position within the viewport
             const x = Math.random() * (window.innerWidth - btn.offsetWidth);
             const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            
             btn.style.position = 'fixed';
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
+            
+            // Temporary CSS to ensure it can't be clicked while moving
+            btn.style.pointerEvents = 'none';
+            setTimeout(() => {
+                btn.style.pointerEvents = 'auto';
+            }, 500);
         }
 
         function secretLove() {
