@@ -46,7 +46,7 @@ function secretLove() {
     alert("You've got the best there is, best there was, best there ever will be ❤️");
 }
 
-// 3. Logic for hovering over NO - Changes text and increases YES button size
+// 3. Logic for clicking NO - Changes text, increases YES button size, and shows broken heart
 function changeNoText() {
     const noBtn = document.getElementById('noBtn');
     const yesBtn = document.getElementById('yesBtn');
@@ -65,15 +65,30 @@ function changeNoText() {
     
     let currentPadding = parseFloat(window.getComputedStyle(yesBtn).paddingTop);
     yesBtn.style.padding = (currentPadding + 5) + "px";
+
+    // 3. UPDATE GIF AND SHOW DENIAL SCREEN
+    const denialImage = document.querySelector('#denial .gif-placeholder');                
+    denialImage.src = 'No.gif'; // Ensure this file exists in your project
+    
+    document.getElementById('questionArea').classList.add('hidden');
+    document.getElementById('denial').classList.remove('hidden');
 }
 
 // 4. Function to celebrate (Triggered by Yes or Secret Button)
 function celebrate() {
+    // Hide all question areas
     document.getElementById('questionArea').classList.add('hidden');
+    
+    // Hide denial area if visible
+    if(document.getElementById('denial')) {
+        document.getElementById('denial').classList.add('hidden');
+    }
+    
     // Assuming 'question2' existed in previous flow, hide it just in case
     if(document.getElementById('question2')) {
         document.getElementById('question2').classList.add('hidden');
     }
+    
     document.getElementById('celebration').classList.remove('hidden');
 
     // --- CONFETTI ANIMATION ---
