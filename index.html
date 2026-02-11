@@ -21,14 +21,15 @@
             position: relative;
         }
 
-        /* Fixed background with blur */
+        /* Fixed background with reduced blur */
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
+            /* UPDATED: Using Devu.jpeg */
             background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
-                        url("bg.jpeg") no-repeat center center/cover;
-            filter: blur(5px);
+                        url("Devu.jpeg") no-repeat center center/cover;
+            filter: blur(2px); 
             z-index: -1;
         }
 
@@ -103,7 +104,6 @@
         }
         #yesBtn { background: #ff4d6d; color: white; }
         
-        /* Updated No button styles */
         #noBtn { 
             background: #6c757d; 
             color: white; 
@@ -117,6 +117,15 @@
             margin: 0 auto 20px auto;
             display: block;
             border-radius: 10px;
+            object-fit: contain; /* UPDATED: Better handling for different image sizes */
+        }
+
+        /* UPDATED: Style for the secret image */
+        #secretImage {
+            width: 300px; /* Make it wider */
+            height: auto;
+            border-radius: 0;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -134,14 +143,24 @@
             <img src="Cute.gif" class="gif-placeholder" alt="Cute Valentine">
             <h1 id="questionText">Devuuu, Will You Be My Valentine???</h1>
             
-            <button class="cute-btn" id="yesBtn" onclick="nextStep()">Yes</button>
-            <button class="cute-btn" id="noBtn" onclick="changeNoText()">No</button>
+            <button class="cute-btn" id="yesBtn" onclick="handleYesClick()">Yes</button>
+            <button class="cute-btn" id="noBtn" onclick="handleNoClick()">No</button>
         </div>
 
         <div id="celebration" class="hidden">
             <img src="Teddy.gif" class="gif-placeholder" alt="Dancing Teddy">
             <h2>YAYYY! 🎉</h2>
-            <p>I love you soooooo muchhhh devuuuuu!❤️</p>
+            <p>I love you so much, devu!</p>
+        </div>
+
+        <div id="denial" class="hidden">
+            <img src="broken-heart.png" class="gif-placeholder" alt="Broken Heart">
+            <h2>Oh no! 💔</h2>
+            <p>Maybe next time?</p>
+        </div>
+
+        <div id="secretArea" class="hidden">
+            <img src="Devu.jpeg" class="gif-placeholder" id="secretImage" alt="I love you more">
         </div>
     </div>
 
@@ -152,23 +171,6 @@
     <script>
         // Track states
         let yesClickCount = 0;
-        let noClickCount = 0;
-
-        // Array of messages for the 'No' button
-        const noMessages = [
-            "No",
-            "Are you sure?",
-            "Are you really sure??",
-            "Think again?",
-            "Don't believe in second chances?",
-            "Why are you being so cold?",
-            "Maybe we can talk about it?",
-            "I am not going to ask again!",
-            "Ok now this is hurting my feelings!",
-            "You are now just being mean!",
-            "Please give me a chance!",
-            "Ok, Let's just start over.."
-        ];
 
         function toggleMusic() {
             const music = document.getElementById('bgMusic');
@@ -182,8 +184,8 @@
             }
         }
 
-        // 1. Logic for clicking YES
-        function nextStep() {
+        // Logic for clicking YES
+        function handleYesClick() {
             yesClickCount++; 
 
             const questionText = document.getElementById('questionText');
@@ -193,28 +195,28 @@
                 questionText.innerText = "Are you 1000% sure??";
                 yesBtn.innerText = "Yes, I AM!";
             } else if (yesClickCount >= 2) {
-                celebrate();
+                showCelebration();
             }
         }
 
-        // 2. Logic for clicking NO - Stationary effect & Growing Yes
-        function changeNoText() {
-            const noBtn = document.getElementById('noBtn');
-            const yesBtn = document.getElementById('yesBtn');
+        // Logic for clicking NO - Shows denial screen
+        function handleNoClick() {
+            document.getElementById('questionArea').classList.add('hidden');
+            document.getElementById('denial').classList.remove('hidden');
+        }
+
+        // Secret Love Function (UPDATED)
+        function secretLove() {
+            document.getElementById('questionArea').classList.add('hidden');
+            document.getElementById('denial').classList.add('hidden');
+            document.getElementById('celebration').classList.add('hidden');
             
-            // 1. Change text
-            if (noClickCount < noMessages.length) {
-                noBtn.innerText = noMessages[noClickCount];
-                noClickCount++;
-            }
-
-            // 2. Make the yes button bigger
-            let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-            yesBtn.style.fontSize = (currentSize + 10) + "px";
+            document.getElementById('secretArea').classList.remove('hidden');
+            document.querySelector('.secret-answer').classList.add('hidden');
         }
 
-        // 3. Final Celebration Logic
-        function celebrate() {
+        // Final Celebration Logic
+        function showCelebration() {
             document.getElementById('questionArea').classList.add('hidden');
             document.getElementById('celebration').classList.remove('hidden');
 
@@ -239,10 +241,6 @@
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
             }, 250);
-        }
-
-        function secretLove() {
-            alert("Devu, you found the secret! I love you more! ❤️");
         }
     </script>
 </body>
