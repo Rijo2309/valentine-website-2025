@@ -82,7 +82,7 @@ function celebrate() {
     document.getElementById('celebration').classList.remove('hidden');
 
     // --- CONFETTI ANIMATION ---
-    var duration = 5 * 1000;
+    var duration = 20 * 1000;
     var animationEnd = Date.now() + duration;
     var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
