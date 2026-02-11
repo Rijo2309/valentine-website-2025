@@ -1,3 +1,5 @@
+// --- Updated script.js ---
+
 // Track states
 let yesClickCount = 0;
 let noClickCount = 0;
@@ -109,4 +111,3 @@ function toggleMusic() {
         btn.innerHTML = "🎵 Play Music";
     }
 }
-update and send
