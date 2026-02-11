@@ -99,7 +99,8 @@
             border: none;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.2s ease;
+            /* Smooth transition for resizing */
+            transition: all 0.3s ease-in-out;
         }
         #yesBtn { background: #ff4d6d; color: white; }
         
@@ -165,6 +166,10 @@
         // Track states
         let yesClickCount = 0;
         let noClickCount = 0;
+        
+        // Initial sizes
+        let noBtnSize = 1;
+        let yesBtnSize = 1;
 
         // Array of messages for the 'No' button
         const noMessages = [
@@ -209,7 +214,7 @@
             }
         }
 
-        // 2. Logic for clicking NO - Changes text, grows Yes, shows denial
+        // 2. Logic for clicking NO - Changes text, grows Yes, shrinks No, shows denial
         function handleNoClick() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
@@ -220,11 +225,17 @@
                 noClickCount++;
             }
 
-            // 2. Make the yes button bigger only when NO is clicked
-            let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-            yesBtn.style.fontSize = (currentSize + 10) + "px";
+            // 2. Make the yes button bigger
+            yesBtnSize += 0.5; // Scale up
+            yesBtn.style.transform = `scale(${yesBtnSize})`;
+
+            // 3. Make the no button smaller
+            if (noBtnSize > 0.3) {
+                noBtnSize -= 0.1; // Scale down
+                noBtn.style.transform = `scale(${noBtnSize})`;
+            }
             
-            // 3. Switch to denial screen (No image needed)
+            // 4. Switch to denial screen (No image needed)
             document.getElementById('questionArea').classList.add('hidden');
             document.getElementById('denial').classList.remove('hidden');
         }
