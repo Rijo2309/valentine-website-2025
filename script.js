@@ -2,7 +2,7 @@
 
 // Track states
 let yesClickCount = 0;
-let noClickCount = 0;
+let noHoverCount = 0; // Changed to track hover events for moving button
 
 // Array of messages for the 'No' button
 const noMessages = [
@@ -46,50 +46,39 @@ function secretLove() {
     alert("You've got the best there is, best there was, best there ever will be ❤️");
 }
 
-// 3. Logic for CLICKING NO - Increases YES button size and updates image
-function handleNoClick() {
+// 3. Logic for hovering over NO - Makes button run away and grow YES button
+function changeNoText() {
     const noBtn = document.getElementById('noBtn');
     const yesBtn = document.getElementById('yesBtn');
-    const denialImage = document.querySelector('#denial .gif-placeholder');
     
     // 1. Change the text of the no button based on count
-    if (noClickCount < noMessages.length) {
-        noBtn.innerText = noMessages[noClickCount];
-        noClickCount++;
+    if (noHoverCount < noMessages.length) {
+        noBtn.innerText = noMessages[noHoverCount];
     } else {
         noBtn.innerText = noMessages[noMessages.length - 1]; // Keep last message
     }
+    noHoverCount++;
 
-    // 2. Make the yes button bigger each time NO is clicked
+    // 2. Make the yes button bigger faster
     let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
     yesBtn.style.fontSize = (currentSize + 10) + "px"; // Increased growth rate
     
-    let currentPadding = parseFloat(window.getComputedStyle(yesBtn).paddingTop);
-    yesBtn.style.padding = (currentPadding + 5) + "px";
-
-    // 3. Switch to the heartbreak image and denial screen
-    if (denialImage) {
-        denialImage.src = 'No.gif'; // Ensure this file is in your folder
-    }
+    // 3. Make the No button run away!
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
     
-    document.getElementById('questionArea').classList.add('hidden');
-    document.getElementById('denial').classList.remove('hidden');
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = `${x}px`;
+    noBtn.style.top = `${y}px`;
 }
 
 // 4. Function to celebrate (Triggered by Yes or Secret Button)
 function celebrate() {
     document.getElementById('questionArea').classList.add('hidden');
-    
-    // Hide denial area if visible
-    if(document.getElementById('denial')) {
-        document.getElementById('denial').classList.add('hidden');
-    }
-    
     // Assuming 'question2' existed in previous flow, hide it just in case
     if(document.getElementById('question2')) {
         document.getElementById('question2').classList.add('hidden');
     }
-    
     document.getElementById('celebration').classList.remove('hidden');
 
     // --- CONFETTI ANIMATION ---
