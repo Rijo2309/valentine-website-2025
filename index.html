@@ -144,6 +144,12 @@
             <h2>YAYYY! 🎉</h2>
             <p>I love you so much, devu!</p>
         </div>
+
+        <div id="denial" class="hidden">
+            <img src="No.gif" class="gif-placeholder" alt="Sad Teddy">
+            <h2>Oh no! 💔</h2>
+            <p>Maybe next time?</p>
+        </div>
     </div>
 
     <div class="secret-answer">
@@ -153,23 +159,6 @@
     <script>
         // Track states
         let yesClickCount = 0;
-        let noClickCount = 0;
-
-        // Array of messages for the 'No' button
-        const noMessages = [
-            "No",
-            "Are you sure?",
-            "Are you really sure??",
-            "Think again?",
-            "Don't believe in second chances?",
-            "Why are you being so cold?",
-            "Maybe we can talk about it?",
-            "I am not going to ask again!",
-            "Ok now this is hurting my feelings!",
-            "You are now just being mean!",
-            "Please give me a chance!",
-            "Ok, Let's just start over.."
-        ];
 
         function toggleMusic() {
             const music = document.getElementById('bgMusic');
@@ -198,20 +187,10 @@
             }
         }
 
-        // Logic for clicking NO - Stationary effect & Growing Yes
+        // Logic for clicking NO - Shows denial screen (UPDATED)
         function handleNoClick() {
-            const noBtn = document.getElementById('noBtn');
-            const yesBtn = document.getElementById('yesBtn');
-            
-            // 1. Change text
-            if (noClickCount < noMessages.length) {
-                noBtn.innerText = noMessages[noClickCount];
-                noClickCount++;
-            }
-
-            // 2. Make the yes button bigger
-            let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-            yesBtn.style.fontSize = (currentSize + 10) + "px";
+            document.getElementById('questionArea').classList.add('hidden');
+            document.getElementById('denial').classList.remove('hidden');
         }
 
         // Final Celebration Logic
