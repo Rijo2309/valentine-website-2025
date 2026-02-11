@@ -1,5 +1,3 @@
-// --- Updated script.js ---
-
 // Track states
 let yesClickCount = 0;
 let noClickCount = 0;
