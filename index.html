@@ -156,8 +156,7 @@
         let yesClickCount = 0;
         let noClickCount = 0;
         
-        // Initial sizes
-        let noBtnSize = 1;
+        // Initial size
         let yesBtnSize = 1;
 
         // Array of messages for the 'No' button
@@ -203,26 +202,20 @@
             }
         }
 
-        // 2. Logic for clicking NO - Changes text, grows Yes, shrinks No, no screen switch
+        // 2. Logic for clicking NO - Changes text, grows Yes, keeps No size constant
         function handleNoClick() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
             
-            // 1. Change text
+            // 1. Change text on No button
             if (noClickCount < noMessages.length) {
                 noBtn.innerText = noMessages[noClickCount];
                 noClickCount++;
             }
 
-            // 2. Make the yes button bigger
-            yesBtnSize += 0.5; // Scale up
+            // 2. Make the yes button bigger (Scale up)
+            yesBtnSize += 0.5; 
             yesBtn.style.transform = `scale(${yesBtnSize})`;
-
-            // 3. Make the no button smaller
-            if (noBtnSize > 0.3) {
-                noBtnSize -= 0.1; // Scale down
-                noBtn.style.transform = `scale(${noBtnSize})`;
-            }
         }
 
         // 3. Final Celebration Logic
