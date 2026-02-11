@@ -119,12 +119,6 @@
             display: block;
             border-radius: 10px;
         }
-        
-        /* Special style for denial text when image is missing */
-        #denial h2 {
-            font-size: 3rem;
-            margin: 20px 0;
-        }
     </style>
 </head>
 <body>
@@ -151,12 +145,7 @@
             <p>I love you so much, devu!</p>
         </div>
         
-        <div id="denial" class="hidden">
-            <h2>💔</h2>
-            <h2>Oh no!</h2>
-            <p>Maybe next time?</p>
         </div>
-    </div>
 
     <div class="secret-answer">
         <button class="cute-btn special" onclick="secretLove()">I don't like you, I love you! ❤️</button>
@@ -214,7 +203,7 @@
             }
         }
 
-        // 2. Logic for clicking NO - Changes text, grows Yes, shrinks No, shows denial
+        // 2. Logic for clicking NO - Changes text, grows Yes, shrinks No, no screen switch
         function handleNoClick() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
@@ -234,10 +223,6 @@
                 noBtnSize -= 0.1; // Scale down
                 noBtn.style.transform = `scale(${noBtnSize})`;
             }
-            
-            // 4. Switch to denial screen (No image needed)
-            document.getElementById('questionArea').classList.add('hidden');
-            document.getElementById('denial').classList.remove('hidden');
         }
 
         // 3. Final Celebration Logic
