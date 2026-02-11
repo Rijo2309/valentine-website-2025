@@ -6,6 +6,7 @@
     <title>Will You Be My Valentine? 💝</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
         body {
@@ -20,7 +21,7 @@
             position: relative;
         }
 
-        /* Fixed background with blur to match screenshots */
+        /* Fixed background with blur */
         body::before {
             content: "";
             position: fixed;
@@ -31,7 +32,7 @@
             z-index: -1;
         }
 
-        /* Music Button - Top Right & Bold Pink */
+        /* Music Button - Top Right */
         .music-controls {
             position: fixed;
             top: 25px;
@@ -98,7 +99,7 @@
             border: none;
             cursor: pointer;
             font-weight: 600;
-            transition: 0.3s;
+            transition: all 0.2s ease;
         }
         #yesBtn { background: #ff4d6d; color: white; }
         
@@ -106,10 +107,16 @@
         #noBtn { 
             background: #6c757d; 
             color: white; 
-            /* Updated: Removed absolute positioning so it stays in flow */
-            transition: all 0.2s ease;
         }
+        
         .hidden { display: none !important; }
+        
+        .gif-placeholder {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px auto;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -122,14 +129,16 @@
     </div>
 
     <div class="container">
-        <h1>Devuuu,Will You Be My Valentine???</h1>
-        
         <div id="questionArea">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZkNzVndm55Z2V4a2s0dW16cmV4YmNmb252YXU3dnBzd3V1cWJ6ZCZlcD12MV9pbnRlcm5hbF9naWZzX2dpZnlfY29tJmN0PWc/c6XTJeqR0M95e/giphy.gif" class="gif-placeholder" alt="Cute">
+            <h1 id="questionText">Devuuu, Will You Be My Valentine???</h1>
+            
             <button class="cute-btn" id="yesBtn" onclick="nextStep()">Yes</button>
             <button class="cute-btn" id="noBtn" onclick="changeNoText()">No</button>
         </div>
 
         <div id="celebration" class="hidden">
+            <img src="celebration.gif" class="gif-placeholder" alt="Dancing">
             <h2>YAYYY! 🎉</h2>
             <p>I love you so much, devu!</p>
         </div>
@@ -149,7 +158,6 @@
             "No",
             "Are you sure?",
             "Are you really sure??",
-            "Are you really realy sure???",
             "Think again?",
             "Don't believe in second chances?",
             "Why are you being so cold?",
@@ -157,9 +165,7 @@
             "I am not going to ask again!",
             "Ok now this is hurting my feelings!",
             "You are now just being mean!",
-            "Why are you doing this to me?",
             "Please give me a chance!",
-            "I am begging you to stop!",
             "Ok, Let's just start over.."
         ];
 
@@ -175,41 +181,63 @@
             }
         }
 
-        // Logic for clicking YES
+        // 1. Logic for clicking YES
         function nextStep() {
             yesClickCount++; 
 
-            const questionText = document.getElementById('mainQuestion');
+            const questionText = document.getElementById('questionText');
             const yesBtn = document.getElementById('yesBtn');
 
             if (yesClickCount === 1) {
-                // First click: Change the text to the intermediate question
-                questionText.innerText = "Do you really like me??";
-                yesBtn.innerText = "Yes, I really do!";
+                questionText.innerText = "Are you 1000% sure??";
+                yesBtn.innerText = "Yes, I AM!";
             } else if (yesClickCount >= 2) {
-                // Second click: Show the final screen
-                document.getElementById('questionArea').classList.add('hidden');
-                document.getElementById('celebration').classList.remove('hidden');
+                celebrate();
             }
         }
 
-        // Logic for clicking NO - Updated to work on click
+        // 2. Logic for clicking NO - Stationary effect & Growing Yes
         function changeNoText() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
             
-            // Change the text of the no button based on count
+            // 1. Change text
             if (noClickCount < noMessages.length) {
                 noBtn.innerText = noMessages[noClickCount];
                 noClickCount++;
-            } else {
-                noBtn.innerText = noMessages[noMessages.length - 1]; // Keep last message
             }
 
-            // Make the yes button bigger each time
+            // 2. Make the yes button bigger
             let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-            yesBtn.style.fontSize = (currentSize + 5) + "px";
-            yesBtn.style.padding = (parseFloat(window.getComputedStyle(yesBtn).paddingTop) + 5) + "px";
+            yesBtn.style.fontSize = (currentSize + 10) + "px";
+        }
+
+        // 3. Final Celebration Logic
+        function celebrate() {
+            document.getElementById('questionArea').classList.add('hidden');
+            document.getElementById('celebration').classList.remove('hidden');
+
+            // --- CONFETTI ANIMATION ---
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                // particles fall down from top
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
         }
 
         function secretLove() {
