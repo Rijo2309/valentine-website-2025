@@ -143,11 +143,6 @@
             <h2>YAYYY! 🎉</h2>
             <p>I love you so much, devu!</p>
         </div>
-    </div>
-
-    <div class="secret-answer">
-        <button class="cute-btn special" onclick="secretLove()">I don't like you, I love you! ❤️</button>
-    </div>
 
     <script>
         // Track states
@@ -239,10 +234,6 @@
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
             }, 250);
-        }
-
-        function secretLove() {
-            alert("Devu, you found the secret! I love you more! ❤️");
         }
     </script>
 </body>
