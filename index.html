@@ -90,7 +90,6 @@
             width: 400px;
             color: white;
             text-align: center;
-            z-index: 10;
         }
 
         .cute-btn {
@@ -100,16 +99,14 @@
             border: none;
             cursor: pointer;
             font-weight: 600;
-            /* Smooth transition for resizing */
-            transition: all 0.3s ease-in-out;
+            transition: all 0.2s ease;
         }
         #yesBtn { background: #ff4d6d; color: white; }
         
         /* Updated No button styles */
         #noBtn { 
             background: #6c757d; 
-            color: white;
-            transition: all 0.3s ease-in-out;
+            color: white; 
         }
         
         .hidden { display: none !important; }
@@ -138,7 +135,7 @@
             <h1 id="questionText">Devuuu, Will You Be My Valentine???</h1>
             
             <button class="cute-btn" id="yesBtn" onclick="nextStep()">Yes</button>
-            <button class="cute-btn" id="noBtn" onclick="handleNoClick()">No</button>
+            <button class="cute-btn" id="noBtn" onclick="changeNoText()">No</button>
         </div>
 
         <div id="celebration" class="hidden">
@@ -156,9 +153,6 @@
         // Track states
         let yesClickCount = 0;
         let noClickCount = 0;
-        
-        // Initial size
-        let yesBtnSize = 1;
 
         // Array of messages for the 'No' button
         const noMessages = [
@@ -203,20 +197,20 @@
             }
         }
 
-        // 2. Logic for clicking NO - Changes text, grows Yes
-        function handleNoClick() {
+        // 2. Logic for clicking NO - Stationary effect & Growing Yes
+        function changeNoText() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
             
-            // 1. Change text on No button
+            // 1. Change text
             if (noClickCount < noMessages.length) {
                 noBtn.innerText = noMessages[noClickCount];
                 noClickCount++;
             }
 
-            // 2. Make the yes button bigger (Scale up)
-            yesBtnSize += 0.3; // More gradual growth
-            yesBtn.style.transform = `scale(${yesBtnSize})`;
+            // 2. Make the yes button bigger
+            let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+            yesBtn.style.fontSize = (currentSize + 10) + "px";
         }
 
         // 3. Final Celebration Logic
@@ -248,7 +242,7 @@
         }
 
         function secretLove() {
-            alert("Devuu, You've got the best there is, best there was, best there ever will be! ❤️");
+            alert("Devu, you found the secret! I love you more! ❤️");
         }
     </script>
 </body>
