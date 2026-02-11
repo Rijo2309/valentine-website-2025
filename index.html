@@ -106,8 +106,8 @@
         #noBtn { 
             background: #6c757d; 
             color: white; 
-            position: absolute; /* Allows moveButton to position it */
-            transition: all 0.2s ease; /* Faster transition for escaping */
+            /* Removed absolute positioning so it stays in flow, just changes text */
+            transition: all 0.2s ease;
         }
         .hidden { display: none !important; }
     </style>
@@ -127,7 +127,7 @@
         <div id="questionArea">
             <h2 id="mainQuestion">Do you like me?</h2>
             <button class="cute-btn" id="yesBtn" onclick="nextStep()">Yes</button>
-            <button class="cute-btn" id="noBtn" onmouseenter="moveButton()">No</button>
+            <button class="cute-btn" id="noBtn" onmouseover="changeNoText()">No</button>
         </div>
 
         <div id="celebration" class="hidden">
@@ -141,6 +141,29 @@
     </div>
 
     <script>
+        // Track states
+        let yesClickCount = 0;
+        let noClickCount = 0;
+
+        // Array of messages for the 'No' button
+        const noMessages = [
+            "No",
+            "Are you sure?",
+            "Are you really sure??",
+            "Are you really realy sure???",
+            "Think again?",
+            "Don't believe in second chances?",
+            "Why are you being so cold?",
+            "Maybe we can talk about it?",
+            "I am not going to ask again!",
+            "Ok now this is hurting my feelings!",
+            "You are now just being mean!",
+            "Why are you doing this to me?",
+            "Please give me a chance!",
+            "I am begging you to stop!",
+            "Ok, Let's just start over.."
+        ];
+
         function toggleMusic() {
             const music = document.getElementById('bgMusic');
             const btn = document.getElementById('musicToggle');
@@ -153,32 +176,41 @@
             }
         }
 
+        // Logic for clicking YES
         function nextStep() {
-            document.getElementById('questionArea').classList.add('hidden');
-            document.getElementById('celebration').classList.remove('hidden');
+            yesClickCount++; 
+
+            const questionText = document.getElementById('mainQuestion');
+            const yesBtn = document.getElementById('yesBtn');
+
+            if (yesClickCount === 1) {
+                // First click: Change the text to the intermediate question
+                questionText.innerText = "Do you really like me??";
+                yesBtn.innerText = "Yes, I really do!";
+            } else if (yesClickCount >= 2) {
+                // Second click: Show the final screen
+                document.getElementById('questionArea').classList.add('hidden');
+                document.getElementById('celebration').classList.remove('hidden');
+            }
         }
 
-        // Updated function to keep button within bounds and ensure smooth movement
-        function moveButton() {
-            const btn = document.getElementById('noBtn');
+        // Logic for hovering over NO
+        function changeNoText() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
             
-            // Calculate boundaries based on screen size minus button size
-            const maxWidth = window.innerWidth - btn.offsetWidth - 20;
-            const maxHeight = window.innerHeight - btn.offsetHeight - 20;
-            
-            // Generate random positions within safe bounds
-            const x = Math.max(20, Math.floor(Math.random() * maxWidth));
-            const y = Math.max(20, Math.floor(Math.random() * maxHeight));
-            
-            btn.style.position = 'fixed';
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
-            
-            // Ensures the button is not clickable while moving
-            btn.style.pointerEvents = 'none';
-            setTimeout(() => {
-                btn.style.pointerEvents = 'auto';
-            }, 100);
+            // Change the text of the no button based on count
+            if (noClickCount < noMessages.length) {
+                noBtn.innerText = noMessages[noClickCount];
+                noClickCount++;
+            } else {
+                noBtn.innerText = noMessages[noMessages.length - 1]; // Keep last message
+            }
+
+            // Make the yes button bigger each time
+            let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+            yesBtn.style.fontSize = (currentSize + 5) + "px";
+            yesBtn.style.padding = (parseFloat(window.getComputedStyle(yesBtn).paddingTop) + 5) + "px";
         }
 
         function secretLove() {
