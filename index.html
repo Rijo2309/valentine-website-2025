@@ -161,7 +161,7 @@
     </div>
 
     <div class="secret-answer">
-        <button class="cute-btn special" onclick="secretLove()">For My Sweet Devu, I love you! ❤️</button>
+        <button class="cute-btn special" onclick="secretLove()">I don't like you, I love you! ❤️</button>
     </div>
 
     <script>
@@ -216,4 +216,43 @@
             
             // 1. Change text on No button
             if (noClickCount < noMessages.length) {
-                noBtn.innerText = noMessages[no
+                noBtn.innerText = noMessages[noClickCount];
+                noClickCount++;
+            }
+
+            // 2. Make the yes button bigger (Scale up)
+            yesBtnSize += 0.3; 
+            // New: Cap the size so it doesn't break the layout
+            if (yesBtnSize < 3) {
+                yesBtn.style.transform = `scale(${yesBtnSize})`;
+            }
+        }
+
+        function celebrate() {
+            document.getElementById('questionArea').classList.add('hidden');
+            document.getElementById('celebration').classList.remove('hidden');
+
+            // Confetti
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        function secretLove() {
+            alert("Devuu, I wish you nothing, but the BEST! ❤️");
+        }
+    </script>
+</body>
+</html>
