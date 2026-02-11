@@ -157,13 +157,19 @@
             <h1 id="questionText">Devuuu, Will You Be My Valentine???</h1>
             
             <button class="cute-btn" id="yesBtn" onclick="handleYesClick()">Yes</button>
-            <button class="cute-btn" id="noBtn" onclick="changeNoText()">No</button>
+            <button class="cute-btn" id="noBtn" onclick="handleNoClick()">No</button>
         </div>
 
         <div id="celebration" class="hidden">
             <img src="Teddy.gif" class="gif-placeholder" alt="Dancing Teddy">
             <h2>YAYYY! 🎉</h2>
             <p>I love you so much, devu!</p>
+        </div>
+
+        <div id="denial" class="hidden">
+            <img src="No.gif" class="gif-placeholder" alt="Broken Heart">
+            <h2>Oh no! 💔</h2>
+            <p>Maybe next time?</p>
         </div>
     </div>
 
@@ -173,23 +179,6 @@
 
     <script>
         let yesClickCount = 0;
-        let noClickCount = 0;
-
-        // Array of messages for the 'No' button
-        const noMessages = [
-            "No",
-            "Are you sure?",
-            "Are you really sure??",
-            "Think again?",
-            "Don't believe in second chances?",
-            "Why are you being so cold?",
-            "Maybe we can talk about it?",
-            "I am not going to ask again!",
-            "Ok now this is hurting my feelings!",
-            "You are now just being mean!",
-            "Please give me a chance!",
-            "Ok, Let's just start over.."
-        ];
 
         function toggleMusic() {
             const music = document.getElementById('bgMusic');
@@ -218,20 +207,10 @@
             }
         }
 
-        // 2. Logic for clicking NO - Stationary effect & Growing Yes
-        function changeNoText() {
-            const noBtn = document.getElementById('noBtn');
-            const yesBtn = document.getElementById('yesBtn');
-            
-            // 1. Change text
-            if (noClickCount < noMessages.length) {
-                noBtn.innerText = noMessages[noClickCount];
-                noClickCount++;
-            }
-
-            // 2. Make the yes button bigger
-            let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-            yesBtn.style.fontSize = (currentSize + 10) + "px";
+        // 2. Logic for clicking NO - Shows denial screen (UPDATED)
+        function handleNoClick() {
+            document.getElementById('questionArea').classList.add('hidden');
+            document.getElementById('denial').classList.remove('hidden');
         }
 
         // 3. Final Celebration Logic
