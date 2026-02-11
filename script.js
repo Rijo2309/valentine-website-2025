@@ -46,10 +46,11 @@ function secretLove() {
     alert("You've got the best there is, best there was, best there ever will be ❤️");
 }
 
-// 3. Logic for CLICKING NO - Changes text and increases YES button size
+// 3. Logic for CLICKING NO - Increases YES button size and updates image
 function handleNoClick() {
     const noBtn = document.getElementById('noBtn');
     const yesBtn = document.getElementById('yesBtn');
+    const denialImage = document.querySelector('#denial .gif-placeholder');
     
     // 1. Change the text of the no button based on count
     if (noClickCount < noMessages.length) {
@@ -59,12 +60,20 @@ function handleNoClick() {
         noBtn.innerText = noMessages[noMessages.length - 1]; // Keep last message
     }
 
-    // 2. Make the yes button bigger each time
+    // 2. Make the yes button bigger each time NO is clicked
     let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-    yesBtn.style.fontSize = (currentSize + 5) + "px";
+    yesBtn.style.fontSize = (currentSize + 10) + "px"; // Increased growth rate
     
     let currentPadding = parseFloat(window.getComputedStyle(yesBtn).paddingTop);
     yesBtn.style.padding = (currentPadding + 5) + "px";
+
+    // 3. Switch to the heartbreak image and denial screen
+    if (denialImage) {
+        denialImage.src = 'No.gif'; // Ensure this file is in your folder
+    }
+    
+    document.getElementById('questionArea').classList.add('hidden');
+    document.getElementById('denial').classList.remove('hidden');
 }
 
 // 4. Function to celebrate (Triggered by Yes or Secret Button)
