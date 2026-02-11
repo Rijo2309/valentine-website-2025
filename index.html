@@ -6,6 +6,7 @@
     <title>Will You Be My Valentine? 💝</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
@@ -21,62 +22,15 @@
             position: relative;
         }
 
-        /* Fixed background with reduced blur */
+        /* Fixed background with blur */
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
                         url("bg.jpeg") no-repeat center center/cover;
-            /* CHANGED: Lowered from 5px to 2px for less blurness */
-            filter: blur(2px); 
+            filter: blur(2px);
             z-index: -1;
-        }
-
-        /* Music Button - Top Right */
-        .music-controls {
-            position: fixed;
-            top: 25px;
-            right: 25px;
-            z-index: 2000;
-        }
-
-        .music-btn {
-            background: #ff4d6d !important;
-            color: white !important;
-            border: 2px solid #fff !important;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Secret Text - Bottom Right */
-        .secret-answer {
-            position: fixed;
-            bottom: 15px;
-            right: 15px;
-            z-index: 1000;
-        }
-
-        .cute-btn.special {
-            background: rgba(255, 255, 255, 0.05) !important; 
-            color: rgba(255, 255, 255, 0.3) !important;
-            font-size: 0.75rem;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.5s ease;
-        }
-
-        .cute-btn.special:hover {
-            color: rgba(255, 255, 255, 1) !important;
-            background: rgba(255, 255, 255, 0.2) !important;
         }
 
         .container {
@@ -91,20 +45,32 @@
             width: 400px;
             color: white;
             text-align: center;
+            transition: all 0.5s ease;
         }
 
         .cute-btn {
-            padding: 12px 25px;
-            margin: 10px;
-            border-radius: 15px;
+            padding: 15px 30px;
+            margin: 15px;
+            border-radius: 50px;
             border: none;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.2s ease;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
         }
-        #yesBtn { background: #ff4d6d; color: white; }
         
-        /* Updated No button styles */
+        #yesBtn { 
+            background: #ff4d6d; 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+        }
+        
+        /* 1. Romantic Hover Effects */
+        #yesBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6);
+        }
+        
         #noBtn { 
             background: #6c757d; 
             color: white; 
@@ -123,20 +89,13 @@
 </head>
 <body>
 
-    <div id="musicControls" class="music-controls">
-        <button id="musicToggle" class="music-btn" onclick="toggleMusic()">🎵 Play Music</button>
-        <audio id="bgMusic" loop>
-            <source src="love_me_love_me.mp3" type="audio/mpeg">
-        </audio>
-    </div>
-
-    <div class="container">
+    <div class="container" id="mainContainer">
         <div id="questionArea">
             <img src="Cute.gif" class="gif-placeholder" alt="Cute Valentine">
             <h1 id="questionText">Devuuu, Will You Be My Valentine???</h1>
             
             <button class="cute-btn" id="yesBtn" onclick="handleYesClick()">Yes</button>
-            <button class="cute-btn" id="noBtn" onclick="handleNoClick()">No</button>
+            <button class="cute-btn" id="noBtn" onmouseover="changeNoText()">No</button>
         </div>
 
         <div id="celebration" class="hidden">
@@ -144,53 +103,41 @@
             <h2>YAYYY! 🎉</h2>
             <p>I love you so much, devu!</p>
         </div>
-
-        <div id="denial" class="hidden">
-            <img src="No.gif" class="gif-placeholder" alt="Sad Teddy">
-            <h2>Oh no! 💔</h2>
-            <p>Maybe next time?</p>
-        </div>
-    </div>
-
-    <div class="secret-answer">
-        <button class="cute-btn special" onclick="secretLove()">I don't like you, I love you! ❤️</button>
     </div>
 
     <script>
-        // Track states
-        let yesClickCount = 0;
+        let noClickCount = 0;
 
-        function toggleMusic() {
-            const music = document.getElementById('bgMusic');
-            const btn = document.getElementById('musicToggle');
-            if (music.paused) {
-                music.play();
-                btn.innerHTML = "⏸ Pause Music";
+        // Dynamic messages for the "No" button
+        const noMessages = [
+            "Are you sure?",
+            "Are you really sure??",
+            "Think again?",
+            "Don't believe in second chances?",
+            "Why are you being so cold?",
+            "Maybe we can talk about it?",
+            "I am not going to ask again!",
+            "Ok now this is hurting my feelings!",
+            "You are now just being mean!",
+            "Please give me a chance!",
+            "Ok, Let's just start over.."
+        ];
+
+        // 3. Dynamic "No" Messages Function
+        function changeNoText() {
+            const noBtn = document.getElementById('noBtn');
+            
+            if (noClickCount < noMessages.length) {
+                noBtn.innerText = noMessages[noClickCount];
+                noClickCount++;
             } else {
-                music.pause();
-                btn.innerHTML = "🎵 Play Music";
+                noBtn.innerText = "Okay, fine!";
             }
         }
 
         // Logic for clicking YES
         function handleYesClick() {
-            yesClickCount++; 
-
-            const questionText = document.getElementById('questionText');
-            const yesBtn = document.getElementById('yesBtn');
-
-            if (yesClickCount === 1) {
-                questionText.innerText = "Are you 1000% sure??";
-                yesBtn.innerText = "Yes, I AM!";
-            } else if (yesClickCount >= 2) {
-                showCelebration();
-            }
-        }
-
-        // Logic for clicking NO - Shows denial screen (UPDATED)
-        function handleNoClick() {
-            document.getElementById('questionArea').classList.add('hidden');
-            document.getElementById('denial').classList.remove('hidden');
+            showCelebration();
         }
 
         // Final Celebration Logic
@@ -215,14 +162,9 @@
                 }
 
                 var particleCount = 50 * (timeLeft / duration);
-                // particles fall down from top
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
             }, 250);
-        }
-
-        function secretLove() {
-            alert("Devu, you found the secret! I love you more! ❤️");
         }
     </script>
 </body>
