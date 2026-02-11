@@ -91,25 +91,35 @@
             color: white;
             text-align: center;
             z-index: 10;
+            /* New: Keep contents contained */
+            overflow: hidden; 
+        }
+
+        .button-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            /* New: Ensures buttons stay aligned */
+            min-height: 100px; 
+            margin-top: 20px;
         }
 
         .cute-btn {
             padding: 12px 25px;
-            margin: 10px;
             border-radius: 15px;
             border: none;
             cursor: pointer;
             font-weight: 600;
-            /* Smooth transition for resizing */
             transition: all 0.3s ease-in-out;
+            /* New: Vital for keeping buttons centered while growing */
+            transform-origin: center; 
         }
         #yesBtn { background: #ff4d6d; color: white; }
         
-        /* Updated No button styles */
         #noBtn { 
             background: #6c757d; 
             color: white;
-            transition: all 0.3s ease-in-out;
         }
         
         .hidden { display: none !important; }
@@ -137,8 +147,10 @@
             <img src="Cute.gif" class="gif-placeholder" alt="Cute Valentine">
             <h1 id="questionText">Devuuu, Will You Be My Valentine???</h1>
             
-            <button class="cute-btn" id="yesBtn" onclick="nextStep()">Yes</button>
-            <button class="cute-btn" id="noBtn" onclick="handleNoClick()">No</button>
+            <div class="button-wrapper">
+                <button class="cute-btn" id="yesBtn" onclick="nextStep()">Yes</button>
+                <button class="cute-btn" id="noBtn" onclick="handleNoClick()">No</button>
+            </div>
         </div>
 
         <div id="celebration" class="hidden">
@@ -153,14 +165,10 @@
     </div>
 
     <script>
-        // Track states
         let yesClickCount = 0;
         let noClickCount = 0;
-        
-        // Initial size
         let yesBtnSize = 1;
 
-        // Array of messages for the 'No' button
         const noMessages = [
             "No",
             "Are you sure?",
@@ -188,7 +196,6 @@
             }
         }
 
-        // 1. Logic for clicking YES
         function nextStep() {
             yesClickCount++; 
 
@@ -203,53 +210,10 @@
             }
         }
 
-        // 2. Logic for clicking NO - Changes text, grows Yes
         function handleNoClick() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
             
             // 1. Change text on No button
             if (noClickCount < noMessages.length) {
-                noBtn.innerText = noMessages[noClickCount];
-                noClickCount++;
-            }
-
-            // 2. Make the yes button bigger (Scale up)
-            yesBtnSize += 0.3; // More gradual growth
-            yesBtn.style.transform = `scale(${yesBtnSize})`;
-        }
-
-        // 3. Final Celebration Logic
-        function celebrate() {
-            document.getElementById('questionArea').classList.add('hidden');
-            document.getElementById('celebration').classList.remove('hidden');
-
-            // --- CONFETTI ANIMATION ---
-            var duration = 5 * 1000;
-            var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-            function randomInRange(min, max) {
-                return Math.random() * (max - min) + min;
-            }
-
-            var interval = setInterval(function() {
-                var timeLeft = animationEnd - Date.now();
-
-                if (timeLeft <= 0) {
-                    return clearInterval(interval);
-                }
-
-                var particleCount = 50 * (timeLeft / duration);
-                // particles fall down from top
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-            }, 250);
-        }
-
-        function secretLove() {
-            alert("Devuu, I wish you nothing, but the BEST! ❤️");
-        }
-    </script>
-</body>
-</html>
+                noBtn.innerText = noMessages[no
