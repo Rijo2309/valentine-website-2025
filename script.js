@@ -1,60 +1,105 @@
-// Function to handle the initial "Yes" click
+// --- Updated script.js ---
+
+// Track states
+let yesClickCount = 0;
+let noClickCount = 0;
+
+// Array of messages for the 'No' button
+const noMessages = [
+    "No",
+    "Are you sure?",
+    "Are you really sure??",
+    "Are you really realy sure???",
+    "Think again?",
+    "Don't believe in second chances?",
+    "Why are you being so cold?",
+    "Maybe we can talk about it?",
+    "I am not going to ask again!",
+    "Ok now this is hurting my feelings!",
+    "You are now just being mean!",
+    "Why are you doing this to me?",
+    "Please give me a chance!",
+    "I am begging you to stop!",
+    "Ok, Let's just start over.."
+];
+
+// 1. Function to handle the initial "Yes" click
 function nextStep() {
-    // 1. Popup: "Do You Really Like Me?"
-    if (confirm("Do You Really Like Me???")) {
-        // If they click OK on popup, go straight to final celebration
+    yesClickCount++;
+
+    const questionText = document.getElementById('mainQuestion');
+    const yesBtn = document.getElementById('yesBtn');
+
+    if (yesClickCount === 1) {
+        // First click: Change the text to the intermediate question
+        questionText.innerText = "Do you really like me??";
+        yesBtn.innerText = "Yes, I really do!";
+    } else if (yesClickCount >= 2) {
+        // Second click: Go straight to final celebration
         celebrate();
-    } else {
-        // If they click Cancel on popup, show the "What do you do then??" question
-        showWhatDoYouDo();
     }
 }
 
-// 2. Question: "What do you do then??"
-function showWhatDoYouDo() {
-    // Hide initial content
-    document.getElementById('questionArea').classList.add('hidden');
-    // Show a container for the new question
-    document.getElementById('question2').classList.remove('hidden'); 
-    
-    // Set button to moving "No"
-    const noBtn = document.getElementById('noBtnMove');
-    noBtn.onmouseenter = moveButton; // Keep it moving
-}
-
-// 3. Secret Button Action (Sidebar/Bottom Right)
+// 2. Secret Button Action (Sidebar/Bottom Right)
 function secretLove() {
-    // 4. Final Popup
+    // Final Popup
     alert("You've got the best there is, best there was, best there ever will be ❤️");
 }
 
-// Updated function to keep button within bounds
-function moveButton() {
-    const btn = document.getElementById('noBtnMove');
-    const maxWidth = window.innerWidth - btn.offsetWidth;
-    const maxHeight = window.innerHeight - btn.offsetHeight;
+// 3. Logic for hovering over NO - Changes text and increases YES button size
+function changeNoText() {
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
     
-    const x = Math.max(0, Math.floor(Math.random() * maxWidth));
-    const y = Math.max(0, Math.floor(Math.random() * maxHeight));
+    // 1. Change the text of the no button based on count
+    if (noClickCount < noMessages.length) {
+        noBtn.innerText = noMessages[noClickCount];
+        noClickCount++;
+    } else {
+        noBtn.innerText = noMessages[noMessages.length - 1]; // Keep last message
+    }
+
+    // 2. Make the yes button bigger each time
+    let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+    yesBtn.style.fontSize = (currentSize + 5) + "px";
     
-    btn.style.position = 'fixed';
-    btn.style.left = x + 'px';
-    btn.style.top = y + 'px';
-    
-    btn.style.pointerEvents = 'none';
-    setTimeout(() => {
-        btn.style.pointerEvents = 'auto';
-    }, 100);
+    let currentPadding = parseFloat(window.getComputedStyle(yesBtn).paddingTop);
+    yesBtn.style.padding = (currentPadding + 5) + "px";
 }
 
-// Existing celebrate function
+// 4. Function to celebrate (Triggered by Yes or Secret Button)
 function celebrate() {
     document.getElementById('questionArea').classList.add('hidden');
-    document.getElementById('question2').classList.add('hidden');
+    // Assuming 'question2' existed in previous flow, hide it just in case
+    if(document.getElementById('question2')) {
+        document.getElementById('question2').classList.add('hidden');
+    }
     document.getElementById('celebration').classList.remove('hidden');
+
+    // --- CONFETTI ANIMATION ---
+    var duration = 5 * 1000;
+    var animationEnd = Date.now() + duration;
+    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    var interval = setInterval(function() {
+        var timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+            return clearInterval(interval);
+        }
+
+        var particleCount = 50 * (timeLeft / duration);
+        // particles fall down from top
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+    }, 250);
 }
 
-// Existing music logic
+// 5. Existing music logic
 function toggleMusic() {
     const music = document.getElementById('bgMusic');
     const btn = document.getElementById('musicToggle');
