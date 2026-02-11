@@ -32,8 +32,8 @@ function nextStep() {
 
     if (yesClickCount === 1) {
         // First click: Change the text to the intermediate question
-        questionText.innerText = "Do you really like me??";
-        yesBtn.innerText = "Yes, I really do!";
+        questionText.innerText = "Are you 1000000000000% sure??";
+        yesBtn.innerText = "Yes, I AM!";
     } else if (yesClickCount >= 2) {
         // Second click: Go straight to final celebration
         celebrate();
