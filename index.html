@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will You Be My Valentine? 💝</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
@@ -31,6 +31,8 @@
             max-width: 90%;
             width: 500px;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
         }
 
         .gif-placeholder {
@@ -72,6 +74,7 @@
             color: white;
             /* Keep it centered while growing */
             transform-origin: center;
+            z-index: 11;
         }
 
         #yesBtn:hover {
@@ -88,6 +91,19 @@
         }
         
         .hidden { display: none !important; }
+        
+        /* Secret button styling */
+        .secret-answer {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            opacity: 0.3;
+            z-index: 100;
+        }
+        
+        .secret-answer:hover {
+            opacity: 1;
+        }
         
     </style>
 </head>
@@ -109,6 +125,10 @@
             <h1>YAYYY! 🎉</h1>
             <p>I love you so much, devu!</p>
         </div>
+    </div>
+    
+    <div class="secret-answer">
+        <button class="cute-btn" style="font-size: 0.7rem; padding: 5px 10px;" onclick="secretLove()">I don't like you, I love you! ❤️</button>
     </div>
 
     <script>
@@ -179,6 +199,10 @@
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
             }, 250);
+        }
+        
+        function secretLove() {
+            alert("Devuu, You've got the best there is, best there was, best there ever will be! ❤️");
         }
     </script>
 </body>
