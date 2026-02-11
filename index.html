@@ -135,13 +135,19 @@
             <h1 id="questionText">Devuuu, Will You Be My Valentine???</h1>
             
             <button class="cute-btn" id="yesBtn" onclick="nextStep()">Yes</button>
-            <button class="cute-btn" id="noBtn" onclick="changeNoText()">No</button>
+            <button class="cute-btn" id="noBtn" onclick="handleNoClick()">No</button>
         </div>
 
         <div id="celebration" class="hidden">
             <img src="Teddy.gif" class="gif-placeholder" alt="Dancing Teddy">
             <h2>YAYYY! 🎉</h2>
             <p>I love you so much, devu!</p>
+        </div>
+        
+        <div id="denial" class="hidden">
+            <img src="No.gif" class="gif-placeholder" alt="Broken Heart">
+            <h2>Oh no! 💔</h2>
+            <p>Maybe next time?</p>
         </div>
     </div>
 
@@ -197,10 +203,11 @@
             }
         }
 
-        // 2. Logic for clicking NO - Stationary effect & Growing Yes
-        function changeNoText() {
+        // 2. Logic for clicking NO - Changes text, grows Yes, shows denial
+        function handleNoClick() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
+            const denialImage = document.querySelector('#denial .gif-placeholder');
             
             // 1. Change text
             if (noClickCount < noMessages.length) {
@@ -211,6 +218,14 @@
             // 2. Make the yes button bigger
             let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
             yesBtn.style.fontSize = (currentSize + 10) + "px";
+            
+            // 3. Switch to the heartbreak image and denial screen
+            if (denialImage) {
+                denialImage.src = 'No.gif'; // Ensure this file is in your folder
+            }
+            
+            document.getElementById('questionArea').classList.add('hidden');
+            document.getElementById('denial').classList.remove('hidden');
         }
 
         // 3. Final Celebration Logic
