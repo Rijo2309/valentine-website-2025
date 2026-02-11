@@ -26,9 +26,9 @@
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* UPDATED: Using Bg.jpeg */
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
-                        url("Bg.jpeg") no-repeat center center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                        url("bg.jpeg") no-repeat center center/cover;
+            /* CHANGED: Lowered from 5px to 2px for less blurness */
             filter: blur(2px); 
             z-index: -1;
         }
@@ -104,6 +104,7 @@
         }
         #yesBtn { background: #ff4d6d; color: white; }
         
+        /* Updated No button styles */
         #noBtn { 
             background: #6c757d; 
             color: white; 
@@ -117,15 +118,6 @@
             margin: 0 auto 20px auto;
             display: block;
             border-radius: 10px;
-            object-fit: contain; /* UPDATED: Better handling for different image sizes */
-        }
-
-        /* UPDATED: Style for the secret image */
-        #secretImage {
-            width: 300px; /* Make it wider */
-            height: auto;
-            border-radius: 0;
-            object-fit: contain;
         }
     </style>
 </head>
@@ -152,25 +144,32 @@
             <h2>YAYYY! 🎉</h2>
             <p>I love you so much, devu!</p>
         </div>
-
-        <div id="denial" class="hidden">
-            <img src="broken-heart.png" class="gif-placeholder" alt="Broken Heart">
-            <h2>Oh no! 💔</h2>
-            <p>Maybe next time?</p>
-        </div>
-
-        <div id="secretArea" class="hidden">
-            <img src="Devu.jpeg" class="gif-placeholder" id="secretImage" alt="I love you more">
-        </div>
     </div>
 
     <div class="secret-answer">
-        <button class="cute-btn special" onclick="secretLove()"> I love you! ❤️</button>
+        <button class="cute-btn special" onclick="secretLove()">I don't like you, I love you! ❤️</button>
     </div>
 
     <script>
         // Track states
         let yesClickCount = 0;
+        let noClickCount = 0;
+
+        // Array of messages for the 'No' button
+        const noMessages = [
+            "No",
+            "Are you sure?",
+            "Are you really sure??",
+            "Think again?",
+            "Don't believe in second chances?",
+            "Why are you being so cold?",
+            "Maybe we can talk about it?",
+            "I am not going to ask again!",
+            "Ok now this is hurting my feelings!",
+            "You are now just being mean!",
+            "Please give me a chance!",
+            "Ok, Let's just start over.."
+        ];
 
         function toggleMusic() {
             const music = document.getElementById('bgMusic');
@@ -199,20 +198,20 @@
             }
         }
 
-        // Logic for clicking NO - Shows denial screen
+        // Logic for clicking NO - Stationary effect & Growing Yes
         function handleNoClick() {
-            document.getElementById('questionArea').classList.add('hidden');
-            document.getElementById('denial').classList.remove('hidden');
-        }
-
-        // Secret Love Function (UPDATED)
-        function secretLove() {
-            document.getElementById('questionArea').classList.add('hidden');
-            document.getElementById('denial').classList.add('hidden');
-            document.getElementById('celebration').classList.add('hidden');
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
             
-            document.getElementById('secretArea').classList.remove('hidden');
-            document.querySelector('.secret-answer').classList.add('hidden');
+            // 1. Change text
+            if (noClickCount < noMessages.length) {
+                noBtn.innerText = noMessages[noClickCount];
+                noClickCount++;
+            }
+
+            // 2. Make the yes button bigger
+            let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+            yesBtn.style.fontSize = (currentSize + 10) + "px";
         }
 
         // Final Celebration Logic
@@ -241,6 +240,10 @@
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
             }, 250);
+        }
+
+        function secretLove() {
+            alert("Devu, you found the secret! I love you more! ❤️");
         }
     </script>
 </body>
