@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will You Be My Valentine? 💝</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
@@ -20,7 +19,6 @@
             justify-content: center;
             overflow: hidden;
             position: relative;
-            color: white;
         }
 
         /* Fixed background with blur */
@@ -28,9 +26,9 @@
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
                         url("bg.jpeg") no-repeat center center/cover;
-            filter: blur(4px);
+            filter: blur(5px);
             z-index: -1;
         }
 
@@ -43,21 +41,18 @@
         }
 
         .music-btn {
-            background: rgba(255, 77, 109, 0.8) !important;
+            background: #ff4d6d !important;
             color: white !important;
             border: 2px solid #fff !important;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 50px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s ease;
         }
-        
-        .music-btn:hover { background: rgba(255, 77, 109, 1) !important; }
 
         /* Secret Text - Bottom Right */
         .secret-answer {
@@ -68,9 +63,9 @@
         }
 
         .cute-btn.special {
-            background: rgba(255, 255, 255, 0.1) !important; 
-            color: rgba(255, 255, 255, 0.5) !important;
-            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.05) !important; 
+            color: rgba(255, 255, 255, 0.3) !important;
+            font-size: 0.75rem;
             border: none;
             padding: 8px 12px;
             border-radius: 8px;
@@ -84,47 +79,31 @@
         }
 
         .container {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15) !important; 
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 25px;
             padding: 40px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-            max-width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            max-width: 85%;
             width: 400px;
+            color: white;
             text-align: center;
-            transition: all 0.5s ease;
-        }
-
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            margin-bottom: 30px;
         }
 
         .cute-btn {
-            padding: 15px 30px;
+            padding: 12px 25px;
             margin: 10px;
-            border-radius: 50px;
+            border-radius: 15px;
             border: none;
             cursor: pointer;
             font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
+        #yesBtn { background: #ff4d6d; color: white; }
         
-        #yesBtn { 
-            background: #ff4d6d; 
-            color: white; 
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
-        }
-        
-        #yesBtn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.5);
-        }
-        
+        /* Updated No button styles */
         #noBtn { 
             background: #6c757d; 
             color: white; 
@@ -137,15 +116,14 @@
             height: 150px;
             margin: 0 auto 20px auto;
             display: block;
-            border-radius: 15px;
-            object-fit: cover;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 
     <div id="musicControls" class="music-controls">
-        <button id="musicToggle" class="music-btn" onclick="toggleMusic()">🎵 Play</button>
+        <button id="musicToggle" class="music-btn" onclick="toggleMusic()">🎵 Play Music</button>
         <audio id="bgMusic" loop>
             <source src="love_me_love_me.mp3" type="audio/mpeg">
         </audio>
@@ -156,8 +134,8 @@
             <img src="Cute.gif" class="gif-placeholder" alt="Cute Valentine">
             <h1 id="questionText">Devuuu, Will You Be My Valentine???</h1>
             
-            <button class="cute-btn" id="yesBtn" onclick="handleYesClick()">Yes</button>
-            <button class="cute-btn" id="noBtn" onclick="handleNoClick()">No</button>
+            <button class="cute-btn" id="yesBtn" onclick="nextStep()">Yes</button>
+            <button class="cute-btn" id="noBtn" onclick="changeNoText()">No</button>
         </div>
 
         <div id="celebration" class="hidden">
@@ -165,35 +143,47 @@
             <h2>YAYYY! 🎉</h2>
             <p>I love you so much, devu!</p>
         </div>
-
-        <div id="denial" class="hidden">
-            <img src="No.gif" class="gif-placeholder" alt="Broken Heart">
-            <h2>Oh no! 💔</h2>
-            <p>Maybe next time?</p>
-        </div>
     </div>
 
     <div class="secret-answer">
-        <button class="cute-btn special" onclick="secretLove()">You have got the best, right?</button>
+        <button class="cute-btn special" onclick="secretLove()">I don't like you, I love you! ❤️</button>
     </div>
 
     <script>
+        // Track states
         let yesClickCount = 0;
+        let noClickCount = 0;
+
+        // Array of messages for the 'No' button
+        const noMessages = [
+            "No",
+            "Are you sure?",
+            "Are you really sure??",
+            "Think again?",
+            "Don't believe in second chances?",
+            "Why are you being so cold?",
+            "Maybe we can talk about it?",
+            "I am not going to ask again!",
+            "Ok now this is hurting my feelings!",
+            "You are now just being mean!",
+            "Please give me a chance!",
+            "Ok, Let's just start over.."
+        ];
 
         function toggleMusic() {
             const music = document.getElementById('bgMusic');
             const btn = document.getElementById('musicToggle');
             if (music.paused) {
                 music.play();
-                btn.innerHTML = "⏸ Pause";
+                btn.innerHTML = "⏸ Pause Music";
             } else {
                 music.pause();
-                btn.innerHTML = "🎵 Play";
+                btn.innerHTML = "🎵 Play Music";
             }
         }
 
         // 1. Logic for clicking YES
-        function handleYesClick() {
+        function nextStep() {
             yesClickCount++; 
 
             const questionText = document.getElementById('questionText');
@@ -207,10 +197,20 @@
             }
         }
 
-        // 2. Logic for clicking NO - Shows denial screen (UPDATED)
-        function handleNoClick() {
-            document.getElementById('questionArea').classList.add('hidden');
-            document.getElementById('denial').classList.remove('hidden');
+        // 2. Logic for clicking NO - Stationary effect & Growing Yes
+        function changeNoText() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            
+            // 1. Change text
+            if (noClickCount < noMessages.length) {
+                noBtn.innerText = noMessages[noClickCount];
+                noClickCount++;
+            }
+
+            // 2. Make the yes button bigger
+            let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+            yesBtn.style.fontSize = (currentSize + 10) + "px";
         }
 
         // 3. Final Celebration Logic
@@ -242,7 +242,7 @@
         }
 
         function secretLove() {
-            alert("Devu, you have got The Best There Is, the Best There Was, the Best There Ever Will be ❤️");
+            alert("Devu, you found the secret! I love you more! ❤️");
         }
     </script>
 </body>
