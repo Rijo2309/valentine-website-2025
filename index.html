@@ -57,6 +57,7 @@
             font-weight: 600;
             font-size: 1.1rem;
             transition: all 0.3s ease;
+            position: relative; /* Needed for movement */
         }
         
         #yesBtn { 
@@ -65,10 +66,8 @@
             box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
         }
         
-        /* 1. Romantic Hover Effects */
         #yesBtn:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6);
         }
         
         #noBtn { 
@@ -95,7 +94,7 @@
             <h1 id="questionText">Devuuu, Will You Be My Valentine???</h1>
             
             <button class="cute-btn" id="yesBtn" onclick="handleYesClick()">Yes</button>
-            <button class="cute-btn" id="noBtn" onmouseover="changeNoText()">No</button>
+            <button class="cute-btn" id="noBtn" onmouseover="moveButton()">No</button>
         </div>
 
         <div id="celebration" class="hidden">
@@ -106,10 +105,12 @@
     </div>
 
     <script>
+        let yesClickCount = 0;
         let noClickCount = 0;
 
         // Dynamic messages for the "No" button
         const noMessages = [
+            "No",
             "Are you sure?",
             "Are you really sure??",
             "Think again?",
@@ -123,24 +124,37 @@
             "Ok, Let's just start over.."
         ];
 
-        // 3. Dynamic "No" Messages Function
-        function changeNoText() {
+        // 1. Move the No button on hover
+        function moveButton() {
             const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
             
+            // Randomly position the button
+            let x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            let y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+
+            // Change No text and make Yes button bigger
             if (noClickCount < noMessages.length) {
                 noBtn.innerText = noMessages[noClickCount];
                 noClickCount++;
-            } else {
-                noBtn.innerText = "Okay, fine!";
             }
+            
+            // Make "Yes" button slightly larger on each hover
+            let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+            yesBtn.style.fontSize = (currentSize + 2) + "px";
+            yesBtn.style.padding = (currentSize/2 + 5) + "px " + (currentSize + 5) + "px";
         }
 
-        // Logic for clicking YES
+        // 2. Logic for clicking YES
         function handleYesClick() {
             showCelebration();
         }
 
-        // Final Celebration Logic
+        // 3. Final Celebration Logic
         function showCelebration() {
             document.getElementById('questionArea').classList.add('hidden');
             document.getElementById('celebration').classList.remove('hidden');
