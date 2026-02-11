@@ -106,7 +106,7 @@
         #noBtn { 
             background: #6c757d; 
             color: white; 
-            /* Removed absolute positioning so it stays in flow, just changes text */
+            /* Updated: Removed absolute positioning so it stays in flow */
             transition: all 0.2s ease;
         }
         .hidden { display: none !important; }
@@ -127,7 +127,7 @@
         <div id="questionArea">
             <h2 id="mainQuestion">Do you like me?</h2>
             <button class="cute-btn" id="yesBtn" onclick="nextStep()">Yes</button>
-            <button class="cute-btn" id="noBtn" onmouseover="changeNoText()">No</button>
+            <button class="cute-btn" id="noBtn" onclick="changeNoText()">No</button>
         </div>
 
         <div id="celebration" class="hidden">
@@ -194,7 +194,7 @@
             }
         }
 
-        // Logic for hovering over NO
+        // Logic for clicking NO - Updated to work on click
         function changeNoText() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
