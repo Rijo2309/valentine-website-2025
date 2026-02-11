@@ -69,7 +69,7 @@ function handleNoClick() {
 
     // 3. Switch to the heartbreak image and denial screen
     if (denialImage) {
-        denialImage.src = 'no.gif'; // Ensure this file is in your folder
+        denialImage.src = 'denial.gif'; // Ensure this file is in your folder
     }
     
     document.getElementById('questionArea').classList.add('hidden');
